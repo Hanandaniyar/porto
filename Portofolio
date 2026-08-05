@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M Hanan Daniyar — Portofolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0F1115;
+    --bg-panel:#171B21;
+    --bg-panel-2:#1D222A;
+    --border:rgba(237,235,230,0.10);
+    --border-strong:rgba(237,235,230,0.18);
+    --text:#EDEBE6;
+    --text-muted:#8B92A0;
+    --text-dim:#5A6270;
+    --copper:#C88A4A;
+    --copper-soft:rgba(200,138,74,0.14);
+    --copper-line:rgba(200,138,74,0.35);
+    --teal:#5EEAD4;
+    --teal-soft:rgba(94,234,212,0.14);
+    --font-display:'Fraunces', serif;
+    --font-body:'IBM Plex Sans', sans-serif;
+    --font-mono:'IBM Plex Mono', monospace;
+    --maxw:1120px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--font-body);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  img{max-width:100%;display:block;}
+  a{color:inherit;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px;}
+  .eyebrow{
+    font-family:var(--font-mono);
+    font-size:12.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--teal);
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:6px;height:6px;border-radius:50%;
+    background:var(--teal);
+    box-shadow:0 0 0 3px var(--teal-soft);
+  }
+  h1,h2,h3{font-family:var(--font-display);font-weight:600;margin:0;}
+  section{padding:96px 0;position:relative;}
+  section + section{border-top:1px solid var(--border);}
+  .section-head{margin-bottom:48px;max-width:640px;}
+  .section-head h2{font-size:clamp(28px,4vw,40px);margin-top:14px;letter-spacing:-.01em;}
+  .section-head p{color:var(--text-muted);margin-top:14px;font-size:16px;}
+
+  /* ---------- editable affordances ---------- */
+  [contenteditable="true"]{
+    outline:none;
+    border-radius:4px;
+    transition:box-shadow .15s ease, background .15s ease;
+  }
+  body.edit-mode [contenteditable="true"]{
+    box-shadow:0 0 0 1px dashed transparent;
+    cursor:text;
+  }
+  body.edit-mode [contenteditable="true"]:hover{
+    background:rgba(94,234,212,0.06);
+    box-shadow:0 0 0 1px var(--teal-soft);
+  }
+  body.edit-mode [contenteditable="true"]:focus{
+    background:rgba(94,234,212,0.09);
+    box-shadow:0 0 0 1px var(--teal);
+  }
+  .edit-only{display:none;}
+  body.edit-mode .edit-only{display:inline-flex;}
+  body.edit-mode .edit-only.grid-item{display:flex;}
+
+  /* ---------- nav / toolbar ---------- */
+  .nav{
+    position:fixed;top:0;left:0;right:0;z-index:50;
+    background:rgba(15,17,21,0.82);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+  }
+  .nav .wrap{
+    display:flex;align-items:center;justify-content:space-between;
+    padding-top:14px;padding-bottom:14px;
+  }
+  .nav-name{
+    font-family:var(--font-mono);font-size:13px;color:var(--text-muted);
+    letter-spacing:.04em;
+  }
+  .nav-links{display:flex;gap:26px;font-family:var(--font-mono);font-size:13px;color:var(--text-muted);}
+  .nav-links a{text-decoration:none;transition:color .15s;}
+  .nav-links a:hover{color:var(--teal);}
+  .toolbar{display:flex;gap:10px;}
+  .btn{
+    font-family:var(--font-mono);
+    font-size:12.5px;
+    letter-spacing:.03em;
+    padding:9px 14px;
+    border-radius:7px;
+    border:1px solid var(--border-strong);
+    background:var(--bg-panel);
+    color:var(--text);
+    cursor:pointer;
+    display:inline-flex;align-items:center;gap:7px;
+    transition:border-color .15s, color .15s, background .15s;
+  }
+  .btn:hover{border-color:var(--teal);color:var(--teal);}
+  .btn.primary{background:var(--copper);border-color:var(--copper);color:#14100b;font-weight:500;}
+  .btn.primary:hover{background:#d99a5c;color:#14100b;border-color:#d99a5c;}
+  .btn.ghost{background:transparent;}
+  .btn.small{padding:5px 10px;font-size:11.5px;border-radius:6px;}
+  .btn.danger{border-color:transparent;color:var(--text-dim);}
+  .btn.danger:hover{color:#e2685a;border-color:#e2685a;}
+
+  .edit-banner{
+    display:none;
+    font-family:var(--font-mono);
+    font-size:12.5px;
+    color:#14100b;
+    background:var(--teal);
+    text-align:center;
+    padding:9px 12px;
+  }
+  body.edit-mode .edit-banner{display:block;}
+
+  /* ---------- hero ---------- */
+  .hero{
+    position:relative;
+    min-height:92vh;
+    display:flex;
+    align-items:center;
+    padding-top:120px;
+    overflow:hidden;
+    border-top:none;
+  }
+  #latticeCanvas{
+    position:absolute;inset:0;width:100%;height:100%;
+    opacity:.85;
+  }
+  .hero-inner{position:relative;z-index:2;}
+  .hero-inner .eyebrow{margin-bottom:22px;}
+  .hero h1{
+    font-size:clamp(44px,7.4vw,84px);
+    line-height:1.02;
+    letter-spacing:-.02em;
+    max-width:16ch;
+    background:linear-gradient(180deg, var(--text) 0%, var(--text) 60%, var(--copper) 160%);
+    -webkit-background-clip:text;
+    background-clip:text;
+  }
+  .hero .role{
+    font-family:var(--font-mono);
+    font-size:16px;
+    color:var(--copper);
+    margin-top:18px;
+    letter-spacing:.02em;
+  }
+  .hero p.desc{
+    max-width:52ch;
+    color:var(--text-muted);
+    font-size:17px;
+    margin-top:22px;
+  }
+  .hero-cta{display:flex;gap:14px;margin-top:38px;flex-wrap:wrap;}
+  .hero-cta a.btn{text-decoration:none;padding:13px 22px;font-size:13px;}
+
+  /* ---------- about ---------- */
+  .about-grid{display:grid;grid-template-columns:.9fr 1.4fr;gap:56px;align-items:start;}
+  .avatar{
+    width:100%;aspect-ratio:1/1;border-radius:14px;
+    background:
+      radial-gradient(circle at 30% 20%, var(--copper-soft), transparent 60%),
+      radial-gradient(circle at 75% 75%, var(--teal-soft), transparent 55%),
+      var(--bg-panel);
+    border:1px solid var(--border);
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--font-display);
+    font-size:64px;
+    color:var(--text);
+    position:relative;
+    overflow:hidden;
+  }
+  .avatar span{position:relative;z-index:2;}
+  .avatar::after{
+    content:"";
+    position:absolute;inset:0;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size:24px 24px;
+    opacity:.5;
+  }
+  .about-body p{color:var(--text-muted);font-size:16.5px;margin:0 0 16px;}
+  .about-body p:first-child{color:var(--text);font-size:19px;font-family:var(--font-display);line-height:1.5;}
+  .stat-row{display:flex;gap:36px;margin-top:32px;flex-wrap:wrap;}
+  .stat{border-left:2px solid var(--copper);padding-left:14px;}
+  .stat .num{font-family:var(--font-mono);font-size:22px;color:var(--teal);}
+  .stat .label{font-size:12.5px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.06em;margin-top:2px;}
+
+  /* ---------- education / timeline ---------- */
+  .timeline{position:relative;padding-left:32px;}
+  .timeline::before{
+    content:"";position:absolute;left:5px;top:6px;bottom:6px;width:1px;
+    background:linear-gradient(var(--copper), var(--teal));
+  }
+  .tl-item{position:relative;padding-bottom:40px;}
+  .tl-item:last-child{padding-bottom:0;}
+  .tl-item::before{
+    content:"";position:absolute;left:-32px;top:4px;
+    width:11px;height:11px;border-radius:50%;
+    background:var(--bg);border:2px solid var(--teal);
+  }
+  .tl-year{font-family:var(--font-mono);font-size:13px;color:var(--copper);letter-spacing:.05em;}
+  .tl-item h3{font-size:20px;margin-top:8px;}
+  .tl-item p{color:var(--text-muted);margin-top:8px;font-size:15.5px;max-width:60ch;}
+  .tl-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;}
+  .tag{
+    font-family:var(--font-mono);font-size:11.5px;
+    padding:4px 9px;border-radius:5px;
+    background:var(--copper-soft);color:var(--copper);
+    border:1px solid var(--copper-line);
+  }
+
+  /* ---------- skills ---------- */
+  .skills-grid{display:grid;grid-template-columns:1fr 1fr;gap:36px;}
+  .skill-panel{
+    background:var(--bg-panel);border:1px solid var(--border);
+    border-radius:14px;padding:28px;
+  }
+  .skill-panel h3{font-size:15px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.06em;font-weight:500;}
+  .skill-panel .sub{color:var(--text-dim);font-size:13.5px;margin-top:6px;}
+  .skill-list{display:flex;flex-wrap:wrap;gap:9px;margin-top:20px;}
+  .skill-pill{
+    display:inline-flex;align-items:center;gap:6px;
+    font-family:var(--font-mono);font-size:12.5px;
+    padding:7px 12px;border-radius:20px;
+    background:var(--bg-panel-2);border:1px solid var(--border-strong);
+  }
+  .skill-pill .rm{
+    display:none;cursor:pointer;color:var(--text-dim);font-size:13px;line-height:1;
+  }
+  body.edit-mode .skill-pill .rm{display:inline;}
+  body.edit-mode .skill-pill .rm:hover{color:#e2685a;}
+  .skill-panel.physics .skill-pill{border-color:var(--copper-line);}
+  .skill-panel.web3 .skill-pill{border-color:rgba(94,234,212,.35);}
+  .add-pill{
+    font-family:var(--font-mono);font-size:12px;color:var(--text-dim);
+    border:1px dashed var(--border-strong);padding:6px 12px;border-radius:20px;
+    background:transparent;cursor:pointer;
+  }
+  .add-pill:hover{color:var(--teal);border-color:var(--teal);}
+
+  /* ---------- journey ---------- */
+  .journey-strip{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:2px;
+    background:var(--border);border:1px solid var(--border);border-radius:14px;overflow:hidden;
+  }
+  .journey-step{background:var(--bg-panel);padding:26px 22px;min-height:180px;display:flex;flex-direction:column;}
+  .journey-step .idx{font-family:var(--font-mono);font-size:12px;color:var(--text-dim);}
+  .journey-step .phase{font-family:var(--font-mono);font-size:11px;color:var(--teal);text-transform:uppercase;letter-spacing:.06em;margin-top:14px;}
+  .journey-step h4{font-family:var(--font-display);font-size:18px;margin-top:8px;}
+  .journey-step p{font-size:13.5px;color:var(--text-muted);margin-top:8px;flex:1;}
+
+  /* ---------- projects ---------- */
+  .proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+  .proj-card{
+    background:var(--bg-panel);border:1px solid var(--border);border-radius:14px;
+    padding:26px;display:flex;flex-direction:column;min-height:260px;
+    position:relative;transition:border-color .15s, transform .15s;
+  }
+  .proj-card:hover{border-color:var(--border-strong);transform:translateY(-3px);}
+  .proj-kicker{font-family:var(--font-mono);font-size:11px;color:var(--copper);text-transform:uppercase;letter-spacing:.06em;}
+  .proj-card h3{font-size:19px;margin-top:12px;}
+  .proj-card p{font-size:14.5px;color:var(--text-muted);margin-top:10px;flex:1;}
+  .proj-tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px;}
+  .proj-tags .tag{background:var(--teal-soft);color:var(--teal);border-color:rgba(94,234,212,.35);}
+  .proj-footer{display:flex;align-items:center;justify-content:space-between;margin-top:18px;}
+  .proj-link{font-family:var(--font-mono);font-size:12.5px;color:var(--teal);text-decoration:none;display:inline-flex;align-items:center;gap:5px;}
+  .proj-link:hover{text-decoration:underline;}
+  .proj-card .card-controls{position:absolute;top:16px;right:16px;display:none;gap:6px;}
+  body.edit-mode .proj-card .card-controls{display:flex;}
+  .add-card{
+    border:1px dashed var(--border-strong);border-radius:14px;
+    display:none;align-items:center;justify-content:center;
+    min-height:260px;cursor:pointer;color:var(--text-dim);
+    font-family:var(--font-mono);font-size:13px;
+  }
+  body.edit-mode .add-card{display:flex;}
+  .add-card:hover{color:var(--teal);border-color:var(--teal);}
+
+  /* ---------- contact ---------- */
+  .contact-panel{
+    background:linear-gradient(160deg, var(--bg-panel) 0%, var(--bg-panel-2) 100%);
+    border:1px solid var(--border);border-radius:18px;
+    padding:56px;display:grid;grid-template-columns:1.2fr 1fr;gap:40px;align-items:center;
+  }
+  .contact-panel h2{font-size:clamp(26px,4vw,38px);}
+  .contact-panel p{color:var(--text-muted);margin-top:14px;max-width:44ch;}
+  .contact-links{display:flex;flex-direction:column;gap:14px;}
+  .contact-link{
+    display:flex;align-items:center;justify-content:space-between;
+    font-family:var(--font-mono);font-size:14px;
+    padding:14px 18px;border-radius:10px;
+    background:var(--bg);border:1px solid var(--border-strong);
+    text-decoration:none;color:var(--text);
+    transition:border-color .15s, color .15s;
+  }
+  .contact-link:hover{border-color:var(--teal);color:var(--teal);}
+  .contact-link .plat{color:var(--text-dim);font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;}
+  .link-edit-btn{display:none;font-size:11px;color:var(--text-dim);cursor:pointer;background:none;border:none;font-family:var(--font-mono);}
+  body.edit-mode .link-edit-btn{display:inline;}
+
+  footer{padding:36px 0;text-align:center;color:var(--text-dim);font-family:var(--font-mono);font-size:12px;}
+
+  @media (max-width: 860px){
+    .about-grid{grid-template-columns:1fr;}
+    .skills-grid{grid-template-columns:1fr;}
+    .journey-strip{grid-template-columns:1fr 1fr;}
+    .proj-grid{grid-template-columns:1fr;}
+    .contact-panel{grid-template-columns:1fr;padding:34px;}
+    .nav-links{display:none;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+  }
+</style>
+</head>
+<body>
+
+<div class="edit-banner">Mode edit aktif — klik teks mana pun untuk mengubahnya. Gunakan tombol + / × pada kartu untuk menambah atau menghapus item.</div>
+
+<nav class="nav">
+  <div class="wrap">
+    <div class="nav-name">M. HANAN DANIYAR — <span style="color:var(--text-dim);">Portofolio</span></div>
+    <div class="nav-links">
+      <a href="#about">Tentang</a>
+      <a href="#skills">Keahlian</a>
+      <a href="#projects">Proyek</a>
+      <a href="#contact">Kontak</a>
+    </div>
+    <div class="toolbar">
+      <button class="btn ghost" id="editToggle">✎ Edit Konten</button>
+      <button class="btn primary" id="exportBtn">⤓ Ekspor HTML</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ================= HERO ================= -->
+<header class="hero" id="top">
+  <canvas id="latticeCanvas"></canvas>
+  <div class="wrap hero-inner">
+    <div class="eyebrow">FISIKA MATERIAL → WEB3</div>
+    <h1 contenteditable="true" class="editable">M Hanan Daniyar</h1>
+    <div class="role editable" contenteditable="true">Materials Physics Graduate, membangun jalan menuju Web3</div>
+    <p class="desc editable" contenteditable="true">Empat tahun mempelajari bagaimana atom tersusun membentuk struktur kristal. Sekarang saya menerapkan cara berpikir yang sama untuk memahami bagaimana node, blok, dan protokol tersusun membentuk jaringan terdesentralisasi.</p>
+    <div class="hero-cta">
+      <a href="#projects" class="btn primary">Lihat Proyek</a>
+      <a href="#contact" class="btn ghost">Hubungi Saya</a>
+    </div>
+  </div>
+</header>
+
+<!-- ================= ABOUT ================= -->
+<section id="about">
+  <div class="wrap about-grid">
+    <div class="avatar"><span class="editable" contenteditable="true">MHD</span></div>
+    <div class="about-body">
+      <p class="editable" contenteditable="true">Saya M Hanan Daniyar — lulusan Fisika Material dari Universitas Brawijaya yang percaya bahwa cara berpikir seorang fisikawan materi (mengamati struktur, mencari pola, menguji hipotesis dengan data) adalah bekal yang kuat untuk memahami dunia Web3.</p>
+      <p class="editable" contenteditable="true">Selama kuliah, saya terbiasa bekerja dengan data eksperimen, karakterisasi material, dan pemodelan kuantitatif. Kini saya mengarahkan rasa ingin tahu yang sama ke smart contract, protokol terdesentralisasi, dan arsitektur blockchain — dengan tujuan berkontribusi nyata di ekosistem Web3.</p>
+      <div class="stat-row">
+        <div class="stat">
+          <div class="num editable" contenteditable="true">3.30</div>
+          <div class="label">IPK / 4.00</div>
+        </div>
+        <div class="stat">
+          <div class="num editable" contenteditable="true">2019–2024</div>
+          <div class="label">Masa Studi</div>
+        </div>
+        <div class="stat">
+          <div class="num editable" contenteditable="true">UB</div>
+          <div class="label">Universitas Brawijaya</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= EDUCATION / TIMELINE ================= -->
+<section id="education">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Latar Belakang</div>
+      <h2 class="editable" contenteditable="true">Pendidikan &amp; fondasi keilmuan</h2>
+      <p class="editable" contenteditable="true">Dari laboratorium material ke dunia terdesentralisasi — jejak akademik yang membentuk cara saya berpikir.</p>
+    </div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-year editable" contenteditable="true">2019 — 2024</div>
+        <h3 class="editable" contenteditable="true">S1 Fisika Material, Universitas Brawijaya</h3>
+        <p class="editable" contenteditable="true">Lulus dengan IPK 3.30/4.00. Fokus studi pada struktur dan sifat material, karakterisasi, serta analisis data eksperimen.</p>
+        <div class="tl-tags">
+          <span class="tag editable" contenteditable="true">Karakterisasi Material</span>
+          <span class="tag editable" contenteditable="true">Analisis Data</span>
+          <span class="tag editable" contenteditable="true">Pemodelan Fisika</span>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year editable" contenteditable="true">2024 — Sekarang</div>
+        <h3 class="editable" contenteditable="true">Transisi mandiri menuju Web3</h3>
+        <p class="editable" contenteditable="true">Belajar mandiri dan membangun proyek seputar blockchain, smart contract, dan ekosistem terdesentralisasi untuk memulai karier di Web3.</p>
+        <div class="tl-tags">
+          <span class="tag editable" contenteditable="true">Solidity</span>
+          <span class="tag editable" contenteditable="true">Ethereum</span>
+          <span class="tag editable" contenteditable="true">Smart Contract</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SKILLS ================= -->
+<section id="skills">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Kemampuan</div>
+      <h2 class="editable" contenteditable="true">Dari fondasi fisika ke keahlian Web3</h2>
+      <p class="editable" contenteditable="true">Dua dunia yang saling melengkapi: ketelitian analitis dari fisika, dan keterampilan teknis yang sedang saya bangun untuk Web3.</p>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-panel physics">
+        <h3 class="editable" contenteditable="true">Fondasi Analitis</h3>
+        <div class="sub editable" contenteditable="true">Dibawa dari studi Fisika Material</div>
+        <div class="skill-list" id="physicsSkills">
+          <span class="skill-pill"><span class="editable" contenteditable="true">Analisis Data &amp; Statistik</span><span class="rm">×</span></span>
+          <span class="skill-pill"><span class="editable" contenteditable="true">Pemodelan Matematis</span><span class="rm">×</span></span>
+          <span class="skill-pill"><span class="editable" contenteditable="true">Metode Riset Ilmiah</span><span class="rm">×</span></span>
+          <span class="skill-pill"><span class="editable" contenteditable="true">Karakterisasi Material (XRD, SEM)</span><span class="rm">×</span></span>
+          <span class="skill-pill"><span class="editable" contenteditable="true">Python untuk Sains Data</span><span class="rm">×</span></span>
+        </div>
+        <button class="add-pill" data-target="physicsSkills">+ tambah skill</button>
+      </div>
+      <div class="skill-panel web3">
+        <h3 class="editable" contenteditable="true">Web3 &amp; Blockchain</h3>
+        <div class="sub editable" contenteditable="true">Sedang dipelajari &amp; dibangun</div>
+        <div class="skill-list" id="web3Skills">
+          <span class="skill-pill"><span class="editable" contenteditable="true">Solidity (belajar)</span><span class="rm">×</span></span>
+          <span class="skill-pill"><span class="editable" contenteditable="true">Smart Contract Fundamentals</span><span class="rm">×</span></span>
+          <span class="skill-pill"><span class="editable" contenteditable="true">Ethereum &amp; EVM</span><span class="rm">×</span></span>
+          <span class="skill-pill"><span class="editable" contenteditable="true">Web3.js / Ethers.js</span><span class="rm">×</span></span>
+          <span class="skill-pill"><span class="editable" contenteditable="true">Dasar Kriptografi</span><span class="rm">×</span></span>
+          <span class="skill-pill"><span class="editable" contenteditable="true">DeFi &amp; Tokenomics</span><span class="rm">×</span></span>
+        </div>
+        <button class="add-pill" data-target="web3Skills">+ tambah skill</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= JOURNEY ================= -->
+<section id="journey">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Fase Transisi</div>
+      <h2 class="editable" contenteditable="true">Seperti transisi fasa material</h2>
+      <p class="editable" contenteditable="true">Perubahan struktur butuh energi dan waktu — begitu juga transisi karier ini.</p>
+    </div>
+    <div class="journey-strip">
+      <div class="journey-step">
+        <div class="idx">01</div>
+        <div class="phase editable" contenteditable="true">Fase Padat</div>
+        <h4 class="editable" contenteditable="true">Fondasi di Fisika Material</h4>
+        <p class="editable" contenteditable="true">2019–2024, membangun cara berpikir ilmiah lewat riset dan karakterisasi material di UB.</p>
+      </div>
+      <div class="journey-step">
+        <div class="idx">02</div>
+        <div class="phase editable" contenteditable="true">Titik Transisi</div>
+        <h4 class="editable" contenteditable="true">Kelulusan &amp; eksplorasi arah baru</h4>
+        <p class="editable" contenteditable="true">2024, lulus dengan IPK 3.30 dan mulai menjajaki dunia teknologi terdesentralisasi.</p>
+      </div>
+      <div class="journey-step">
+        <div class="idx">03</div>
+        <div class="phase editable" contenteditable="true">Fase Cair</div>
+        <h4 class="editable" contenteditable="true">Belajar intensif Web3</h4>
+        <p class="editable" contenteditable="true">Mempelajari Solidity, smart contract, dan arsitektur blockchain secara mandiri.</p>
+      </div>
+      <div class="journey-step">
+        <div class="idx">04</div>
+        <div class="phase editable" contenteditable="true">Fase Baru</div>
+        <h4 class="editable" contenteditable="true">Berkontribusi di ekosistem Web3</h4>
+        <p class="editable" contenteditable="true">Target: bergabung dengan tim atau proyek Web3 sebagai kontributor teknis.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PROJECTS ================= -->
+<section id="projects">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Karya</div>
+      <h2 class="editable" contenteditable="true">Proyek</h2>
+      <p class="editable" contenteditable="true">Ganti kartu di bawah dengan proyek Anda sendiri — klik teks untuk mengedit, gunakan tombol 🔗 untuk mengatur tautan.</p>
+    </div>
+    <div class="proj-grid" id="projectGrid">
+
+      <div class="proj-card">
+        <div class="card-controls">
+          <button class="btn small danger removeCard">× hapus</button>
+        </div>
+        <div class="proj-kicker editable" contenteditable="true">Skripsi · Fisika Material</div>
+        <h3 class="editable" contenteditable="true">Karakterisasi Material [Nama Material]</h3>
+        <p class="editable" contenteditable="true">Penelitian tugas akhir tentang struktur dan sifat material menggunakan metode karakterisasi eksperimental. Ganti dengan judul dan ringkasan skripsi Anda.</p>
+        <div class="proj-tags">
+          <span class="tag editable" contenteditable="true">XRD</span>
+          <span class="tag editable" contenteditable="true">Riset</span>
+        </div>
+        <div class="proj-footer">
+          <a href="#" class="proj-link" data-role="link">Lihat detail →</a>
+          <button class="btn small ghost link-edit-btn">🔗 atur tautan</button>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="card-controls">
+          <button class="btn small danger removeCard">× hapus</button>
+        </div>
+        <div class="proj-kicker editable" contenteditable="true">dApp · Web3</div>
+        <h3 class="editable" contenteditable="true">[Nama Proyek dApp Pertama]</h3>
+        <p class="editable" contenteditable="true">Deskripsi singkat proyek Web3 pertama Anda — misalnya aplikasi minting NFT sederhana atau dashboard wallet. Klik untuk mengganti dengan proyek asli.</p>
+        <div class="proj-tags">
+          <span class="tag editable" contenteditable="true">Solidity</span>
+          <span class="tag editable" contenteditable="true">Ethers.js</span>
+        </div>
+        <div class="proj-footer">
+          <a href="#" class="proj-link" data-role="link">Lihat repo →</a>
+          <button class="btn small ghost link-edit-btn">🔗 atur tautan</button>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="card-controls">
+          <button class="btn small danger removeCard">× hapus</button>
+        </div>
+        <div class="proj-kicker editable" contenteditable="true">Smart Contract</div>
+        <h3 class="editable" contenteditable="true">[Nama Smart Contract]</h3>
+        <p class="editable" contenteditable="true">Contoh smart contract sederhana yang pernah Anda buat sebagai latihan — token, staking, atau escrow. Ganti dengan proyek nyata.</p>
+        <div class="proj-tags">
+          <span class="tag editable" contenteditable="true">EVM</span>
+          <span class="tag editable" contenteditable="true">Testnet</span>
+        </div>
+        <div class="proj-footer">
+          <a href="#" class="proj-link" data-role="link">Lihat kode →</a>
+          <button class="btn small ghost link-edit-btn">🔗 atur tautan</button>
+        </div>
+      </div>
+
+      <button class="add-card" id="addProjectBtn">+ tambah proyek</button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section id="contact">
+  <div class="wrap">
+    <div class="contact-panel">
+      <div>
+        <div class="eyebrow">Mari terhubung</div>
+        <h2 class="editable" contenteditable="true">Terbuka untuk peluang di dunia Web3</h2>
+        <p class="editable" contenteditable="true">Sedang mencari kesempatan magang, entry-level role, atau kolaborasi proyek di ekosistem Web3. Silakan hubungi saya lewat salah satu kanal berikut.</p>
+      </div>
+      <div class="contact-links">
+        <a href="mailto:hanan.daniyar@email.com" class="contact-link" data-role="link">
+          <span><span class="plat">Email</span><br><span class="editable" contenteditable="true">hanan.daniyar@email.com</span></span>
+          <button class="link-edit-btn">🔗 atur</button>
+        </a>
+        <a href="#" class="contact-link" data-role="link">
+          <span><span class="plat">LinkedIn</span><br><span class="editable" contenteditable="true">linkedin.com/in/hanandaniyar</span></span>
+          <button class="link-edit-btn">🔗 atur</button>
+        </a>
+        <a href="#" class="contact-link" data-role="link">
+          <span><span class="plat">GitHub</span><br><span class="editable" contenteditable="true">github.com/hanandaniyar</span></span>
+          <button class="link-edit-btn">🔗 atur</button>
+        </a>
+        <a href="#" class="contact-link" data-role="link">
+          <span><span class="plat">X / Twitter</span><br><span class="editable" contenteditable="true">@hanandaniyar</span></span>
+          <button class="link-edit-btn">🔗 atur</button>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="editable" contenteditable="true">© 2026 M Hanan Daniyar</span> — dibangun dari struktur kristal menuju struktur blockchain.
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------------- EDIT MODE ---------------- */
+  var editToggle = document.getElementById('editToggle');
+  var body = document.body;
+
+  function setEditMode(on){
+    body.classList.toggle('edit-mode', on);
+    editToggle.textContent = on ? '✓ Selesai Edit' : '✎ Edit Konten';
+    document.querySelectorAll('.editable').forEach(function(el){
+      el.contentEditable = on ? 'true' : 'false';
+    });
+    document.querySelectorAll('[data-role="link"]').forEach(function(a){
+      if(on){ a.addEventListener('click', preventNav); }
+      else { a.removeEventListener('click', preventNav); }
+    });
+  }
+  function preventNav(e){ e.preventDefault(); }
+
+  editToggle.addEventListener('click', function(){
+    setEditMode(!body.classList.contains('edit-mode'));
+  });
+  setEditMode(false);
+
+  /* ---------------- LINK EDITING ---------------- */
+  document.addEventListener('click', function(e){
+    var btn = e.target.closest('.link-edit-btn');
+    if(!btn) return;
+    e.preventDefault();
+    e.stopPropagation();
+    var link = btn.closest('[data-role="link"]');
+    var current = link.getAttribute('href') || '';
+    var next = window.prompt('Masukkan URL / alamat tautan:', current === '#' ? '' : current);
+    if(next !== null && next.trim() !== ''){
+      link.setAttribute('href', next.trim());
+    }
+  });
+
+  /* ---------------- SKILL PILLS ---------------- */
+  document.querySelectorAll('.add-pill').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var target = document.getElementById(btn.dataset.target);
+      var pill = document.createElement('span');
+      pill.className = 'skill-pill';
+      pill.innerHTML = '<span class="editable" contenteditable="true">Skill baru</span><span class="rm">×</span>';
+      target.appendChild(pill);
+      pill.querySelector('.editable').contentEditable = 'true';
+      pill.querySelector('.editable').focus();
+    });
+  });
+  document.addEventListener('click', function(e){
+    var rm = e.target.closest('.rm');
+    if(!rm) return;
+    var pill = rm.closest('.skill-pill');
+    if(pill) pill.remove();
+  });
+
+  /* ---------------- PROJECT CARDS ---------------- */
+  var projectGrid = document.getElementById('projectGrid');
+  var addProjectBtn = document.getElementById('addProjectBtn');
+
+  function makeProjectCard(){
+    var card = document.createElement('div');
+    card.className = 'proj-card';
+    card.innerHTML =
+      '<div class="card-controls"><button class="btn small danger removeCard">× hapus</button></div>' +
+      '<div class="proj-kicker editable" contenteditable="true">Kategori</div>' +
+      '<h3 class="editable" contenteditable="true">Nama Proyek Baru</h3>' +
+      '<p class="editable" contenteditable="true">Deskripsikan proyek Anda di sini.</p>' +
+      '<div class="proj-tags"><span class="tag editable" contenteditable="true">Tag</span></div>' +
+      '<div class="proj-footer">' +
+        '<a href="#" class="proj-link" data-role="link">Lihat detail →</a>' +
+        '<button class="btn small ghost link-edit-btn">🔗 atur tautan</button>' +
+      '</div>';
+    return card;
+  }
+
+  addProjectBtn.addEventListener('click', function(){
+    var card = makeProjectCard();
+    projectGrid.insertBefore(card, addProjectBtn);
+  });
+
+  document.addEventListener('click', function(e){
+    var rm = e.target.closest('.removeCard');
+    if(!rm) return;
+    var card = rm.closest('.proj-card');
+    if(card) card.remove();
+  });
+
+  /* ---------------- EXPORT AS STANDALONE HTML ---------------- */
+  document.getElementById('exportBtn').addEventListener('click', function(){
+    var wasEdit = body.classList.contains('edit-mode');
+    setEditMode(false);
+    var html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+    var blob = new Blob([html], {type:'text/html'});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'portofolio-hanan-daniyar.html';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    if(wasEdit) setEditMode(true);
+  });
+
+  /* ---------------- LATTICE → NETWORK CANVAS ---------------- */
+  var canvas = document.getElementById('latticeCanvas');
+  var ctx = canvas.getContext('2d');
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var nodes = [], edges = [], pulses = [];
+  var w, h, spacing = 64;
+
+  function resize(){
+    var hero = canvas.parentElement;
+    w = canvas.width = hero.offsetWidth;
+    h = canvas.height = hero.offsetHeight;
+    buildLattice();
+  }
+
+  function buildLattice(){
+    nodes = [];
+    edges = [];
+    var cols = Math.ceil(w / spacing) + 2;
+    var rows = Math.ceil(h / spacing) + 2;
+    for(var r = 0; r < rows; r++){
+      for(var c = 0; c < cols; c++){
+        nodes.push({
+          x: c * spacing,
+          y: r * spacing,
+          baseX: c * spacing,
+          baseY: r * spacing,
+          r: r, c: c,
+          phase: Math.random() * Math.PI * 2
+        });
+      }
+    }
+    var idx = function(r,c){ return r * cols + c; };
+    for(var r2 = 0; r2 < rows; r2++){
+      for(var c2 = 0; c2 < cols; c2++){
+        if(c2 < cols - 1) edges.push([idx(r2,c2), idx(r2,c2+1)]);
+        if(r2 < rows - 1) edges.push([idx(r2,c2), idx(r2+1,c2)]);
+      }
+    }
+    pulses = [];
+    for(var i = 0; i < Math.min(10, edges.length); i++){
+      spawnPulse();
+    }
+  }
+
+  function spawnPulse(){
+    var e = edges[Math.floor(Math.random() * edges.length)];
+    pulses.push({ edge: e, t: 0, speed: 0.006 + Math.random() * 0.008 });
+  }
+
+  function draw(time){
+    ctx.clearRect(0, 0, w, h);
+
+    if(!reduceMotion){
+      nodes.forEach(function(n){
+        n.x = n.baseX + Math.sin(time * 0.0006 + n.phase) * 3;
+        n.y = n.baseY + Math.cos(time * 0.0006 + n.phase) * 3;
+      });
+    }
+
+    // bonds
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = 'rgba(200,138,74,0.16)';
+    edges.forEach(function(e){
+      var a = nodes[e[0]], b = nodes[e[1]];
+      ctx.beginPath();
+      ctx.moveTo(a.x, a.y);
+      ctx.lineTo(b.x, b.y);
+      ctx.stroke();
+    });
+
+    // nodes
+    nodes.forEach(function(n){
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, 1.6, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(237,235,230,0.35)';
+      ctx.fill();
+    });
+
+    // pulses (transactions traveling across the lattice)
+    if(!reduceMotion){
+      pulses.forEach(function(p){
+        var a = nodes[p.edge[0]], b = nodes[p.edge[1]];
+        var x = a.x + (b.x - a.x) * p.t;
+        var y = a.y + (b.y - a.y) * p.t;
+        var grad = ctx.createRadialGradient(x, y, 0, x, y, 5);
+        grad.addColorStop(0, 'rgba(94,234,212,0.9)');
+        grad.addColorStop(1, 'rgba(94,234,212,0)');
+        ctx.beginPath();
+        ctx.arc(x, y, 5, 0, Math.PI * 2);
+        ctx.fillStyle = grad;
+        ctx.fill();
+        p.t += p.speed;
+      });
+      pulses = pulses.filter(function(p){ return p.t < 1; });
+      if(Math.random() < 0.02) spawnPulse();
+    }
+
+    requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize', resize);
+  resize();
+  requestAnimationFrame(draw);
+
+})();
+</script>
+</body>
+</html>
