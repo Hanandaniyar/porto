@@ -1,4 +1,4 @@
-HANDUR 
+
 # trenches_bot.py - hanya memakai standard library Python
 # Tidak ada dependency eksternal yang perlu di-install.
 #
