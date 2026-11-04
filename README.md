@@ -1,2 +1,0 @@
-# porto
-my own portofolio
