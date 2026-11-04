@@ -1,0 +1,14 @@
+HANDUR 
+# trenches_bot.py - hanya memakai standard library Python
+# Tidak ada dependency eksternal yang perlu di-install.
+#
+# Syarat:
+#   Python >= 3.8
+#
+# Cara cek:
+#   python3 --version
+#
+# Cara jalankan:
+#   export TELEGRAM_BOT_TOKEN="token_bot"
+#   export TELEGRAM_CHAT_ID="chat_id"
+#   python3 trenches_bot.py
