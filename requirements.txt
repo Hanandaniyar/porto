@@ -1,14 +1,5 @@
-
-# trenches_bot.py - hanya memakai standard library Python
-# Tidak ada dependency eksternal yang perlu di-install.
-#
-# Syarat:
-#   Python >= 3.8
-#
-# Cara cek:
-#   python3 --version
-#
-# Cara jalankan:
-#   export TELEGRAM_BOT_TOKEN="token_bot"
-#   export TELEGRAM_CHAT_ID="chat_id"
-#   python3 trenches_bot.py
+# Trenches Bot dependencies
+# No third-party Python packages are required.
+# The project uses Python standard-library modules only.
+# gmgn-cli is an external CLI tool, not a Python package;
+# install and configure it separately if you want GMGN analysis.
