@@ -21,10 +21,10 @@ jobs:
     - name: Install Dependencies
       run: |
         pip install --upgrade pip
-        pip install -r requirements.txt
 
     - name: Run Bot
       env:
-        BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+        TELEGRAM_BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
       run: |
         python "trenches bot.py"
